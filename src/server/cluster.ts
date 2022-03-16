@@ -5,7 +5,7 @@ import * as cluster from 'cluster';
 import * as os from 'os';
 import { Server } from "socket.io";
 
-import { PRODUCTION } from './../configs/server_config';
+import { PRODUCTION, HTTPS_INTERFACE } from './../configs/server_config';
 
 class Cluster {
 
@@ -52,6 +52,20 @@ class Cluster {
                 });
 
             }
+
+        }
+
+        if (HTTPS_INTERFACE === true) {
+
+            const https = require('https');
+            const fs = require('fs');
+
+            var options = {
+                key: fs.readFileSync('/etc/letsencrypt/live/iolnetwork.org/privkey.pem'),
+                cert: fs.readFileSync('/etc/letsencrypt/live/iolnetwork.org/cert.pem'),
+            };
+
+            https.createServer(options, this.app).listen(443);
 
         }
 
