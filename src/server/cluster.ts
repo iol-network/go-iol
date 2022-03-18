@@ -6,6 +6,9 @@ import * as os from 'os';
 import { Server } from "socket.io";
 
 import { PRODUCTION, HTTPS_INTERFACE } from './../configs/server_config';
+import { DIR_FILES, DIR_BLOCKS, DIR_LOGS } from './../configs/iol_config'
+
+import { isFileExist, createDir } from './../app/utils/fileUtils'
 
 class Cluster {
 
@@ -21,6 +24,9 @@ class Cluster {
     }
 
     upServer(): void {
+
+        // Check dir and Create folders
+        this.createDir();
 
         var redis = require('socket.io-redis');
         var io = new Server();
@@ -55,6 +61,7 @@ class Cluster {
 
         }
 
+        // @ts-ignore
         if (HTTPS_INTERFACE === true) {
 
             const https = require('https');
@@ -71,6 +78,22 @@ class Cluster {
 
         new SocketClass(io)
         new Background();
+
+    }
+
+    async createDir(): Promise<void> {
+
+        if (!await isFileExist(DIR_FILES)) {
+            await createDir(DIR_FILES);
+        }
+
+        if (!await isFileExist(DIR_BLOCKS)) {
+            await createDir(DIR_BLOCKS);
+        }
+
+        if (!await isFileExist(DIR_LOGS)) {
+            await createDir(DIR_LOGS);
+        }
 
     }
 
