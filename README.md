@@ -13,3 +13,5 @@ IOL Network project
 10. Vá até o src/app.ts do projeto e execute ( forever -a -l /dev/null -c ts-node app.ts)
 
 /// atualizar, criar a pasta /files/blocks/ e /files/logs
+
+// I'm doing the readme still... I'm running this project in side other... Contact: https://github.com/felipewget
